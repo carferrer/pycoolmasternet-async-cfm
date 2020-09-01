@@ -20,7 +20,7 @@ AUTHOR = 'On Freund'
 REQUIRES_PYTHON = '>=3.7.0'
 VERSION = '0.1.0'
 
-REQUIRED = ['asyncio']
+REQUIRED = []
 
 EXTRAS = {}
 
