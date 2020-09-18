@@ -41,7 +41,7 @@ class CoolMasterNet():
         """Get the general info the this CoolMasterNet."""
         raw = await self._make_request("set")
         lines = raw.strip().split("\r\n")
-        key_values = [re.split(r"\s*:\s*", line) for line in lines]
+        key_values = [re.split(r"\s*:\s*", line, 1) for line in lines]
         return dict(key_values)
 
     async def status(self):
