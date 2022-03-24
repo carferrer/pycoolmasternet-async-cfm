@@ -133,6 +133,7 @@ class CoolMasterNetUnit():
 
     async def set_thermostat(self, value):
         """Set the target temperature."""
+        rounded = round(value, 1)
         await self._make_unit_request(f"temp UID {value}")
         return await self.refresh()
 
@@ -145,3 +146,9 @@ class CoolMasterNetUnit():
         """Turn a unit off."""
         await self._make_unit_request("off UID")
         return await self.refresh()
+
+    async def feed(self, value):
+        """Provides ambient temperature hint to the unit."""
+        rounded = round(value, 1)
+        await self._make_unit_request(f"feed UID {rounded}")
+
