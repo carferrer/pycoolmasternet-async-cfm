@@ -20,12 +20,13 @@ SWING_MODES = list(_SWING_CHAR_TO_NAME.values())
 
 class CoolMasterNet():
     """A connection to a coolmasternet bridge."""
-    def __init__(self, host, port=10102, read_timeout=1):
+    def __init__(self, host, port=10102, read_timeout=1, swing_support=False):
         """Initialize this CoolMasterNet instance to connect to a particular
         host at a particular port."""
         self._host = host
         self._port = port
         self._read_timeout = read_timeout
+        self._swing_support = swing_support
         self._concurrent_reads = asyncio.Semaphore(3)
 
     async def _make_request(self, request):
@@ -82,9 +83,12 @@ class CoolMasterNetUnit():
         self._parse()
 
     @classmethod
-    async def create(cls, bridge, unit_id, raw):
-        swing_line = (await bridge._make_request(f"query {unit_id} s")).strip()
-        return CoolMasterNetUnit(bridge, unit_id, raw, swing_line), unit_id
+    async def create(cls, bridge, unit_id, raw=None):
+        if raw is None:
+            raw = (await bridge._make_request(f"ls2 {unit_id}")).strip()   
+        swing_raw = ((await bridge._make_request(f"query {unit_id} s")).strip() 
+            if bridge._swing_support else "")
+        return CoolMasterNetUnit(bridge, unit_id, raw, swing_raw), unit_id
 
     def _parse(self):
         fields = re.split(r"\s+", self._raw.strip())
@@ -104,8 +108,7 @@ class CoolMasterNetUnit():
 
     async def refresh(self):
         """Refresh the data from CoolMasterNet and return it as a new instance."""
-        status_line = (await self._make_unit_request("ls2 UID")).strip()
-        return (await CoolMasterNetUnit.create(self._bridge, status_line[0:6], status_line))[0]
+        return (await CoolMasterNetUnit.create(self._bridge, self._unit_id))[0]
 
     @property
     def unit_id(self):
