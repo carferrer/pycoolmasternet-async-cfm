@@ -101,6 +101,8 @@ class CoolMasterNetUnit():
         self._temperature = float(fields[3][:-1])
         self._fan_speed = fields[4].lower()
         self._mode = fields[5].lower()
+        self._error_code = fields[6] if fields[6] != "OK" else None
+        self._clean_filter = fields[7] == "#"
         self._swing = _SWING_CHAR_TO_NAME.get(self._swing_raw)
 
     async def _make_unit_request(self, request):
@@ -139,6 +141,16 @@ class CoolMasterNetUnit():
     def mode(self):
         """The current mode (e.g. heat, cool)."""
         return self._mode
+
+    @property
+    def error_code(self):
+        """Error code on error, otherwise None."""
+        return self._error_code
+
+    @property
+    def clean_filter(self):
+        """True when the air filter needs to be cleaned."""
+        return self._clean_filter
 
     @property
     def swing(self):
@@ -195,8 +207,12 @@ class CoolMasterNetUnit():
         await self._make_unit_request("off UID")
         return await self.refresh()
 
+    async def reset_filter(self):
+        """Report that the air filter was cleaned and reset the timer."""
+        await self._make_unit_request(f"filt UID")
+        return await self.refresh()
+
     async def feed(self, value):
         """Provides ambient temperature hint to the unit."""
         rounded = round(value, 1)
         await self._make_unit_request(f"feed UID {rounded}")
-
