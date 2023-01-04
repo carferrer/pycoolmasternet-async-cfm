@@ -38,7 +38,7 @@ class CoolMasterNet():
             try:
                 prompt = await asyncio.wait_for(reader.readuntil(b">"), self._read_timeout)
                 if prompt != b">":
-                    raise Exception("CoolMasterNet prompt not found")
+                    raise ConnectionError("CoolMasterNet prompt not found")
 
                 writer.write((request + "\n").encode("ascii"))
                 response = await asyncio.wait_for(reader.readuntil(b"\n>"), self._read_timeout)
@@ -93,7 +93,7 @@ class CoolMasterNetUnit():
     def _parse(self):
         fields = re.split(r"\s+", self._raw.strip())
         if len(fields) != 9:
-            raise Exception("Unexpected status line format: " + str(fields))
+            raise ConnectionError("Unexpected status line format: " + str(fields))
 
         self._is_on = fields[1] == "ON"
         self._temperature_unit = "imperial" if fields[2][-1] == "F" else "celsius"
