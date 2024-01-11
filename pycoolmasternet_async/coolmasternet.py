@@ -223,7 +223,12 @@ class CoolMasterNetUnit():
         rounded = round(value, 1)
         await self._make_unit_request(f"feed UID {rounded}")
 
-    async def lock(self, value):
+    async def lock(self):
         """Set lock to the unit."""
         await self._make_unit_request(f"lock UID +o")
+        return await self.refresh()
+
+    async def unlock(self):
+        """Set lock to the unit."""
+        await self._make_unit_request(f"lock UID -o")
         return await self.refresh()
