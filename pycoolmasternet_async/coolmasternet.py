@@ -250,5 +250,5 @@ class CoolMasterNetUnit():
 
     async def unlockmode(self):
         """Set lock to the unit."""
-        await self._make_unit_request(f"lock UID +-")
+        await self._make_unit_request(f"lock UID -m")
         return await self.refresh()
