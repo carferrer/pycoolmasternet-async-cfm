@@ -103,6 +103,7 @@ class CoolMasterNetUnit():
         self._mode = fields[5].lower()
         self._error_code = fields[6] if fields[6] != "OK" else None
         self._clean_filter = fields[7] == "#"
+        self._demand = fields[8]
         self._swing = _SWING_CHAR_TO_NAME.get(self._swing_raw)
 
     async def _make_unit_request(self, request):
@@ -151,6 +152,11 @@ class CoolMasterNetUnit():
     def clean_filter(self):
         """True when the air filter needs to be cleaned."""
         return self._clean_filter
+
+    @property
+    def demand(self):
+        """True when the indoor in demanding VRV compresor ON."""
+        return self._demand
 
     @property
     def swing(self):
