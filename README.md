@@ -1,4 +1,4 @@
-# pycoolmasternet-async
+# pycoolmasternet-async-cfm
 
 A Python 3 library for interacting with a [CoolMasterNet](https://coolautomation.com/products/coolmasternet/) HVAC bridge.
 This is a fork of [pycoolmaster](https://github.com/koreth/pycoolmasternet), modified to present an async interface and some other small changes.
