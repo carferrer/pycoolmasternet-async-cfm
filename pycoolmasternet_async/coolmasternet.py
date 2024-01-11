@@ -222,3 +222,8 @@ class CoolMasterNetUnit():
         """Provides ambient temperature hint to the unit."""
         rounded = round(value, 1)
         await self._make_unit_request(f"feed UID {rounded}")
+
+    async def lock(self, value):
+        """Set lock to the unit."""
+        await self._make_unit_request(f"lock UID +o")
+        return await self.refresh()
