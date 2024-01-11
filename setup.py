@@ -12,13 +12,13 @@ from shutil import rmtree
 from setuptools import find_packages, setup, Command
 
 # Package meta-data.
-NAME = 'pycoolmasternet-async'
+NAME = 'pycoolmasternet-async-cfm'
 DESCRIPTION = 'A python library to control CoolMasterNet HVAC bridges over asyncio.'
-URL = 'https://github.com/OnFreund/pycoolmasternet-async'
+URL = 'https://github.com/carferrer/pycoolmasternet-async-cfm'
 EMAIL = 'onfreund@gmail.com'
 AUTHOR = 'On Freund'
 REQUIRES_PYTHON = '>=3.7.0'
-VERSION = '0.1.6'
+VERSION = '0.0.1'
 
 REQUIRED = []
 
